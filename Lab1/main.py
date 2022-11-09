@@ -4,7 +4,7 @@ import shutil
 from bs4 import BeautifulSoup as BS
 
 
-def dataset_create():
+def dataset_create()-> None:
     """
     Проверяет существование папки dataset.
     Cоздает папку dataset и ее подпапки.
@@ -16,7 +16,7 @@ def dataset_create():
         os.mkdir("dataset")
 
 
-def store_image(image_url, index, path):
+def store_image(image_url: str, index: int, path: str)-> None:
     """
    Сохраняет полученное изображение в подпапку dataset и дает ему название согласно индексу.
 
@@ -31,7 +31,7 @@ def store_image(image_url, index, path):
         save.close()
 
 
-def download_images(name, n, path, URL = "https://yandex.ru/images/"):
+def download_images(name: str, n: int, path: str, URL = "https://yandex.ru/images/")-> None:
     """
     Получает html код страницы.
     Через цикл сохраняет N изображений в папку с помощью функции store_image.
