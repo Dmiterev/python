@@ -2,6 +2,8 @@ import os
 import requests
 import shutil
 from bs4 import BeautifulSoup as BS
+HEADERS={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                       "Chrome/80.0.3987.163 Safari/537.36"}
 
 
 def dataset_create() -> None:
@@ -10,10 +12,14 @@ def dataset_create() -> None:
     Cоздает папку dataset и ее подпапки.
     """
     try:
-        os.mkdir("dataset")
-    except OSError:
-        shutil.rmtree("dataset")
-        os.mkdir("dataset")
+        if not os.path.isdir("dataset"):
+            os.mkdir("dataset")
+        else:
+            shutil.rmtree("dataset")
+            os.mkdir("dataset")
+    except OSError as err:
+        print(f"Возникла ошибка!!{err}")
+
 
 
 def store_image(image_url: str, index: int, path: str) -> None:
@@ -31,7 +37,7 @@ def store_image(image_url: str, index: int, path: str) -> None:
         save.close()
 
 
-def download_images(name: str, n: int, path: str, URL = "https://yandex.ru/images/") -> None:
+def download_images(name: str, n: int, path: str, url = "https://yandex.ru/images/") -> None:
     """
     Получает html код страницы.
     Через цикл сохраняет N изображений в папку с помощью функции store_image.
@@ -43,7 +49,7 @@ def download_images(name: str, n: int, path: str, URL = "https://yandex.ru/image
     """
     index = 1
     page = 0
-    html = requests.get(f"{URL}search?p={page}&text={name}&lr=51&rpt=image", headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/80.0.3987.163 Safari/537.36"})
+    html = requests.get(f"{url}search?p={page}&text={name}&lr=51&rpt=image", HEADERS)
     soup = BS(html.text, 'lxml')
     all_images = soup.findAll("img")
     os.mkdir(path)
