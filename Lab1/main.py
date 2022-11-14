@@ -2,8 +2,8 @@ import os
 import requests
 import shutil
 from bs4 import BeautifulSoup as BS
-HEADERS={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) "
-                       "Chrome/80.0.3987.163 Safari/537.36"}
+HEADERS = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) "
+                         "Chrome/80.0.3987.163 Safari/537.36"}
 
 
 def dataset_create() -> None:
@@ -31,10 +31,9 @@ def store_image(image_url: str, index: int, path: str) -> None:
    :param path: путь к папке
     """
     saved_image = requests.get(f"https:{image_url}").content
-    file = f"{path}/{index:04d}.jpg"
+    file = os.path.join(f"{path}/{index:04d}.jpg")
     with open(file, "wb") as save:
         save.write(saved_image)
-        save.close()
 
 
 def download_images(name: str, n: int, path: str, url = "https://yandex.ru/images/") -> None:
@@ -45,7 +44,7 @@ def download_images(name: str, n: int, path: str, url = "https://yandex.ru/image
     :param name: название поискового запроса
     :param n: число изображений, которое нужно сохранить
     :param path: путь к папке
-    :param URL: адрес страницы, с которой будут парситься изображения
+    :param url: адрес страницы, с которой будут парситься изображения
     """
     index = 1
     page = 0
@@ -53,17 +52,15 @@ def download_images(name: str, n: int, path: str, url = "https://yandex.ru/image
     soup = BS(html.text, 'lxml')
     all_images = soup.findAll("img")
     os.mkdir(path)
-    while (True):
-        for image in all_images:
-            if index > n:
-                break
-            image_url = image.get("src")
-            if image_url != "":
-                store_image(image_url, index, path)
-                index += 1
-            print(f"Сохранено {index} изображений с запросом {name}")
-        page += 1
-        break
+    for image in all_images:
+        image_url = image.get("src")
+        if image_url != "":
+            store_image(image_url, index, path)
+            index += 1
+        if index > n:
+            break
+        print(f"Сохранено {index} изображений с запросом {name}")
+    page += 1
 
 
 if __name__ == "__main__":
