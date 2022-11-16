@@ -4,22 +4,24 @@ import os
 CLASSES = ["tiger", "leopard"]
 
 
-def check_file() -> None:
+def check_file(directory: str) -> None:
     """
     Проверяет существование файла annotation.csv.
     """
     try:
-        if os.path.isfile("dataset/annotation.csv"):
-            os.remove("dataset/annotation.csv")
+        if os.path.isfile(f"{directory}/annotation.csv"):
+            os.remove(f"{directory}/annotation.csv")
     except OSError as err:
         print(f"Возникла ошибка!!{err}")
 
 
 class Annotation:
-    def __init__(self, class_name: str) -> None:
+    def __init__(self, directory: str, class_name: str) -> None:
         """
-        :param class_name:Название класса
+        :param directory: Название директории.
+        :param class_name: Название класса.
         """
+        self.directory = directory
         self.class_name = class_name
         self.row = 0
 
@@ -31,20 +33,20 @@ class Annotation:
         :param N: Число вхождений. Нужен, чтобы постоянно не записывалась строчка: "Абсолютный путь, Относительный путь,
         Название класса".
         """
-        with open("dataset/annotation.csv", "a", encoding="utf-8", newline="") as file:
+        with open(f"{self.directory}/annotation.csv", "a", encoding="utf-8", newline="") as file:
             writer = csv.writer(file, quoting=csv.QUOTE_ALL)
             if (self.row == 0) & (N == 0):
                 writer.writerow(["Абсолютный путь", "Относительный путь", "Название класса"])
                 self.row += 1
-            writer.writerow([abs_path, os.path.join("dataset", self.class_name, name_image), class_name])
+            writer.writerow([abs_path, os.path.join(self.directory, self.class_name, name_image), self.class_name])
             self.row += 1
 
 
 if __name__ == "__main__":
     N = 0
-    check_file()
+    check_file("dataset")
     for class_name in CLASSES:
-        obj = Annotation(class_name)
+        obj = Annotation("dataset", class_name)
         for index in range(999):
             abs_path = os.path.abspath(f"{class_name}/{index:04d}.jpg")
             obj.add(abs_path, f"{index:04d}.jpg", N)
