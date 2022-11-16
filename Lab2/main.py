@@ -9,8 +9,8 @@ def check_file() -> None:
     Проверяет существование файла annotation.csv.
     """
     try:
-        if os.path.isfile("annotation.csv"):
-            os.remove("annotation.csv")
+        if os.path.isfile("dataset/annotation.csv"):
+            os.remove("dataset/annotation.csv")
     except OSError as err:
         print(f"Возникла ошибка!!{err}")
 
@@ -31,7 +31,7 @@ class Annotation:
         :param N: Число вхождений. Нужен, чтобы постоянно не записывалась строчка: "Абсолютный путь, Относительный путь,
         Название класса".
         """
-        with open("annotation.csv", "a", encoding="utf-8", newline="") as file:
+        with open("dataset/annotation.csv", "a", encoding="utf-8", newline="") as file:
             writer = csv.writer(file, quoting=csv.QUOTE_ALL)
             if (self.row == 0) & (N == 0):
                 writer.writerow(["Абсолютный путь", "Относительный путь", "Название класса"])
