@@ -45,7 +45,7 @@ if __name__ == "__main__":
     check_file()
     for class_name in CLASSES:
         obj = Annotation(class_name)
-        for index in range(9):
+        for index in range(999):
             abs_path = os.path.abspath(f"{class_name}/{index:04d}.jpg")
             obj.add(abs_path, f"{index:04d}.jpg", N)
         N += 1
