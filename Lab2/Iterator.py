@@ -1,7 +1,7 @@
 import next
 
 
-class Iterator:
+class ElementIterator:
 
     def __init__(self, element_path: str):
         """
@@ -18,5 +18,5 @@ class Iterator:
 
 
 if __name__ == "__main__":
-    obj = Iterator("dataset\\tiger\\0000.jpg")
+    obj = ElementIterator("dataset\\tiger\\0000.jpg")
     print(obj.__next__())

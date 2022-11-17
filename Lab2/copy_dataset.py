@@ -1,6 +1,5 @@
 import os
 import shutil
-
 from Lab2 import main
 from main import Annotation
 
@@ -19,25 +18,25 @@ def create_dataset(directory: str) -> None:
         print(f"Возникла ошибка!!{err}")
 
 
-def copy_element(obj: type(Annotation), N: int, index: int) -> None:
+def copy_element(obj: type(Annotation), n: int, index: int) -> None:
     """
     Переносит элемент из dataset в dataset1, меняет его название и добавляет в новую аннотацию.
     :param obj: Объект класса Annotation.
-    :param N: Число вхождений. Нужен, чтобы постоянно не записывалась строчка: "Абсолютный путь, Относительный путь,
+    :param n: Число вхождений. Нужен, чтобы постоянно не записывалась строчка: "Абсолютный путь, Относительный путь,
         Название класса".
     :param index: Индекс изображения.
     """
     shutil.copy(os.path.join("dataset", obj.class_name, f"{index:04d}.jpg"), obj.directory)
     os.rename(os.path.join(obj.directory, f"{index:04d}.jpg"),
               os.path.join(obj.directory, f"{obj.class_name}_{index:04d}.jpg"))
-    obj.add(os.path.abspath(obj.directory), f"{obj.class_name}_{index:04d}.jpg", N)
+    obj.add(os.path.abspath(obj.directory), f"{obj.class_name}_{index:04d}.jpg", n)
 
 
 if __name__ == "__main__":
-    N = 0
+    n = 0
     create_dataset("dataset1")
     main.check_file("dataset1")
     for class_name in main.CLASSES:
         for index in range(999):
-            copy_element(Annotation("dataset1", class_name), N, index)
-            N += 1
+            copy_element(Annotation("dataset1", class_name), n, index)
+            n += 1
