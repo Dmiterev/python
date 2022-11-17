@@ -5,16 +5,16 @@ from Lab2 import main
 from main import Annotation
 
 
-def create_dataset1() -> None:
+def create_dataset(directory: str) -> None:
     """
     Создание нового Датасета и проверка его существования.
     """
     try:
-        if not os.path.isdir("dataset1"):
-            os.mkdir("dataset1")
+        if not os.path.isdir(directory):
+            os.mkdir(directory)
         else:
-            shutil.rmtree("dataset1")
-            os.mkdir("dataset1")
+            shutil.rmtree(directory)
+            os.mkdir(directory)
     except OSError as err:
         print(f"Возникла ошибка!!{err}")
 
@@ -35,7 +35,7 @@ def copy_element(obj: type(Annotation), N: int, index: int) -> None:
 
 if __name__ == "__main__":
     N = 0
-    create_dataset1()
+    create_dataset("dataset1")
     main.check_file("dataset1")
     for class_name in main.CLASSES:
         for index in range(999):
