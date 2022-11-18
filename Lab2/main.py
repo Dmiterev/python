@@ -7,6 +7,7 @@ CLASSES = ["tiger", "leopard"]
 def check_file(directory: str) -> None:
     """
     Проверяет существование файла annotation.csv.
+    :param directory: Название директории.
     """
     try:
         if os.path.isfile(f"{directory}/annotation.csv"):

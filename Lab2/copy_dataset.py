@@ -1,12 +1,13 @@
 import os
 import shutil
-from Lab2 import main
+import main
 from main import Annotation
 
 
 def create_dataset(directory: str) -> None:
     """
     Создание нового Датасета и проверка его существования.
+    :param directory: Название директории.
     """
     try:
         if not os.path.isdir(directory):
