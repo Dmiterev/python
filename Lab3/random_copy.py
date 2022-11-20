@@ -1,9 +1,9 @@
 import os
 import shutil
 import random
-import main
 from main import Annotation
 import copy_dataset
+import main
 
 
 def random_copy_element(obj: type(Annotation), n: int, index: int) -> None:
@@ -19,11 +19,10 @@ def random_copy_element(obj: type(Annotation), n: int, index: int) -> None:
         rand_index = random.randint(0, 10000)
         if not os.path.isfile(os.path.join(obj.directory, f"{rand_index:05d}.jpg")):
             shutil.copy(os.path.join("dataset", obj.class_name, f"{index:04d}.jpg"), obj.directory)
-            os.rename(os.path.join(obj.directory, f"{index:04d}.jpg"), os.path.join(obj.directory, f"{rand_index:05d}.jpg"))
+            os.rename(os.path.join(obj.directory, f"{index:04d}.jpg"), os.path.join(obj.directory,
+                                                                                    f"{rand_index:05d}.jpg"))
             obj.add(os.path.abspath(obj.directory), f"{rand_index:05d}.jpg", n)
             break
-
-
 
 
 if __name__ == "__main__":
