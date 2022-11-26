@@ -1,4 +1,4 @@
-import next
+from next import next_element
 
 
 class ElementIterator:
@@ -13,7 +13,7 @@ class ElementIterator:
         """
         Возвращает путь следующего элемента.
         """
-        self.element_path = next.next_element(self.element_path)
+        self.element_path = next_element(self.element_path)
         return self.element_path
 
 
