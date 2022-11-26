@@ -87,7 +87,7 @@ class MainWindow(QMainWindow):
         button.move(x, y)
         return button
 
-    def get_directory(self) -> str:
+    def get_directory(self) -> None:
         self.size = 0
         self.dataset_path = QFileDialog.getExistingDirectory(self)
         self.text_directory.setText(f"Текущая папка: {self.dataset_path}")
@@ -96,6 +96,7 @@ class MainWindow(QMainWindow):
             self.text.setText("Программа не работает с такими папками!")
         else:
             self.text.setText("Папка выбрана!")
+
     def counting_images(self) -> None:
         for index in range(999):
             if os.path.isfile(os.path.join(self.dataset_path, "tiger", f"{index:04d}.jpg")):
@@ -171,8 +172,6 @@ class MainWindow(QMainWindow):
         """
         Выводит следующее изображение класса. Если они кончились, то выводится соответствующая надпись.
         :param class_name: Название класса.
-        :param path: Путь к изображению.
-        :param index: Индекс изображения.
         """
         if self.dataset_path != "":
             if self.size != 0:
