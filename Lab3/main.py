@@ -6,7 +6,7 @@ CLASSES = ["tiger", "leopard"]
 
 def remove_annotation(directory_path: str) -> None:
     """
-    Проверяет существование файла annotation.csv.
+    Заменят старую аннотацию, если она есть, на новую.
     :param directory_path: Путь к директории.
     """
     try:
@@ -39,7 +39,8 @@ class Annotation:
             if (self.row == 0) & (n == 0):
                 writer.writerow(["Абсолютный путь", "Относительный путь", "Название класса"])
                 self.row += 1
-            writer.writerow([abs_path, os.path.join(self.directory_path, self.class_name, name_image), self.class_name])
+            dirname = os.path.basename(self.directory_path)
+            writer.writerow([abs_path, os.path.join(dirname, self.class_name, name_image), self.class_name])
             self.row += 1
 
 
