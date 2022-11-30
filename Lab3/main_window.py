@@ -1,7 +1,7 @@
 import os
 import sys
 from PyQt6 import QtGui, QtWidgets
-from PyQt6.QtCore import QSize
+from PyQt6.QtCore import QSize, Qt
 from PyQt6.QtWidgets import QPushButton, QApplication, QMainWindow, QFileDialog, QLabel
 from copy_dataset import create_dataset, copy_element
 from main import remove_annotation, CLASSES, Annotation
@@ -26,13 +26,11 @@ class MainWindow(QMainWindow):
         self.dirname = ""
 
         self.image_tiger = QtWidgets.QLabel(self)
-        self.image_tiger.setPixmap(QtGui.QPixmap(self.tiger_path))
-        self.image_tiger.setFixedSize(1000, 400)
+        self.image_tiger.resize(1000, 400)
         self.image_tiger.move(600, 50)
 
         self.image_leopard = QtWidgets.QLabel(self)
-        self.image_leopard.setPixmap(QtGui.QPixmap(self.leopard_path))
-        self.image_leopard.setFixedSize(QSize(1000, 400))
+        self.image_leopard.resize(1000, 400)
         self.image_leopard.move(600, 350)
 
         button_get_directory = self.add_button("Выбрать директорию для работы", 350, 75, 5, 50)
@@ -102,12 +100,14 @@ class MainWindow(QMainWindow):
             for (dirpath, dirnames, filenames) in os.walk(os.path.join(self.dataset_path, CLASSES[0])):
                 tigerfiles.extend(filenames)
                 self.tiger_path = os.path.join(self.dataset_path, CLASSES[0], tigerfiles[0])
-                self.image_tiger.setPixmap(QtGui.QPixmap(self.tiger_path))
+                self.image_tiger.setPixmap(QtGui.QPixmap(self.tiger_path).scaled(self.image_tiger.height(),
+                                          self.image_tiger.width(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio))
             leopardfiles = []
             for (dirpath, dirnames, filenames) in os.walk(os.path.join(self.dataset_path, CLASSES[1])):
                 leopardfiles.extend(filenames)
                 self.leopard_path = os.path.join(self.dataset_path, CLASSES[1], leopardfiles[0])
-                self.image_leopard.setPixmap(QtGui.QPixmap(self.leopard_path))
+                self.image_leopard.setPixmap(QtGui.QPixmap(self.leopard_path).scaled(self.image_leopard.height(),
+                                        self.image_leopard.width(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio))
                 self.text.setText("Папка выбрана!")
         else:
             self.text.setText("В этой директории нет папок tiger и leopard!")
@@ -183,7 +183,8 @@ class MainWindow(QMainWindow):
                     self.tiger_index += 1
                     obj = ElementIterator(self.tiger_path)
                     self.tiger_path = obj.__next__()
-                    self.image_tiger.setPixmap(QtGui.QPixmap(self.tiger_path))
+                    self.image_tiger.setPixmap(QtGui.QPixmap(self.tiger_path).scaled(self.image_tiger.height(),
+                                          self.image_tiger.width(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio))
                 else:
                     self.text.setText("Изображения с тигром кончились!")
             else:
@@ -191,7 +192,8 @@ class MainWindow(QMainWindow):
                     self.leopard_index += 1
                     obj = ElementIterator(self.leopard_path)
                     self.leopard_path = obj.__next__()
-                    self.image_leopard.setPixmap(QtGui.QPixmap(self.leopard_path))
+                    self.image_leopard.setPixmap(QtGui.QPixmap(self.leopard_path).scaled(self.image_leopard.height(),
+                                        self.image_leopard.width(), aspectRatioMode=Qt.AspectRatioMode.KeepAspectRatio))
                 else:
                     self.text.setText("Изображения с леопардом кончились!")
         else:
