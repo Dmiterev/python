@@ -172,7 +172,6 @@ class MainWindow(QMainWindow):
         else:
             self.text.setText("Папка не выбрана")
 
-
     def next_image(self, class_name: str) -> None:
         """
         Выводит следующее изображение класса. Если они кончились, то выводится соответствующая надпись.
