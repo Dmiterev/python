@@ -16,7 +16,7 @@ class MainWindow(QMainWindow):
 
     def init_ui(self) -> None:
         self.setWindowTitle("Work with images")
-        self.setMinimumSize(1000, 500)
+        self.setFixedSize(1200, 750)
         self.setStyleSheet("background-color : #98F5FF")
         self.dataset_path = ""
         self.tiger_index = 0
