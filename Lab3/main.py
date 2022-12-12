@@ -49,7 +49,7 @@ if __name__ == "__main__":
     remove_annotation(os.path.abspath("dataset"))
     for class_name in CLASSES:
         obj = Annotation("dataset", class_name)
-        for index in range(999):
+        for index in range(10):
             abs_path = os.path.abspath(os.path.join(class_name, f"{index:04d}.jpg"))
             obj.add(abs_path, f"{index:04d}.jpg", n)
         n += 1
