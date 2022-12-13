@@ -22,7 +22,6 @@ def add_columns(df: pd.DataFrame) -> None:
     """
     Добавляет столбцы с меткой класса, высотой, шириной и глубиной изображения.
     :param df: Датафрейм.
-
     """
     width = []
     height = []
@@ -80,9 +79,9 @@ def histogram_construction(df: pd.DataFrame, label: str) -> list:
     path = np.random.choice(df.absolute_path.to_numpy())
     image = cv2.imread(path)
     height, width, depth = image.shape
-    return [cv2.calcHist([image], [0], None, [256], [0, 256]) / (height * width),
-            cv2.calcHist([image], [1], None, [256], [0, 256]) / (height * width),
-            cv2.calcHist([image], [2], None, [256], [0, 256]) / (height * width)]
+    return [cv2.calcHist([image], [0], None, [255], [0, 255]) / (height * width),
+            cv2.calcHist([image], [1], None, [255], [0, 255]) / (height * width),
+            cv2.calcHist([image], [2], None, [255], [0, 255]) / (height * width)]
 
 
 def histogram_drawing(df: pd.DataFrame, label: str) -> None:
@@ -95,10 +94,10 @@ def histogram_drawing(df: pd.DataFrame, label: str) -> None:
     plt.title("Гистограмма")
     plt.ylabel("Плотность")
     plt.xlabel("Интенсивность")
-    plt.xlim([0, 256])
-    plt.plot(histograms[0], "r")
+    plt.xlim([0, 255])
+    plt.plot(histograms[0], "b")
     plt.plot(histograms[1], "g")
-    plt.plot(histograms[2], "b")
+    plt.plot(histograms[2], "r")
     plt.show()
 
 
