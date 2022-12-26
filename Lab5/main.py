@@ -23,9 +23,10 @@ if device == 'cuda':
 
 
 class dataset(torch.utils.data.Dataset):
-    def __init__(self, file_list, transform=None):
+    def __init__(self, file_list, transform=None, path=None):
         self.file_list = file_list
         self.transform = transform
+        self.path = path
 
     def __len__(self):
         self.filelength = len(self.file_list)
@@ -36,9 +37,9 @@ class dataset(torch.utils.data.Dataset):
         img = Image.open(img_path)
         img_transformed = self.transform(img.convert("RGB"))
         label = img_path.split('/')[-1].split('.')[0]
-        if label == os.path.join("D:\\", "dataset", "tiger"):
+        if label == os.path.join(self.path, "tiger"):
             label = 1
-        elif label == os.path.join("D:\\", "dataset", "leopard"):
+        elif label == os.path.join(self.path, "leopard"):
             label = 0
         return img_transformed, label
 
@@ -123,8 +124,8 @@ def training_network(images_list: list) -> pd.DataFrame:
         transforms.ToTensor()
     ])
 
-    train_data = dataset(train_list, transform=train_transforms)
-    val_data = dataset(val_list, transform=test_transforms)
+    train_data = dataset(train_list, transform=train_transforms, path=os.path.join("D:\\", "dataset"))
+    val_data = dataset(val_list, transform=test_transforms, path=os.path.join("D:\\", "dataset"))
     train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True)
     val_loader = torch.utils.data.DataLoader(dataset=val_data, batch_size=batch_size, shuffle=True)
 
