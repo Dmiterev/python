@@ -209,7 +209,7 @@ if __name__ == '__main__':
     fig, axes = plt.subplots(2, 5, figsize=(20, 12), facecolor='w')
     for ax in axes.ravel():
         i = random.choice(submission['id'].values)
-        class_random = random.choice(['tiger', 'leopard'])
+        class_random = random.choice(["tiger", "leopard"])
         label = submission.loc[submission['id'] == i, 'label'].values[0]
         if label > 0.5:
             label = 1
