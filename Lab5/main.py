@@ -36,9 +36,9 @@ class dataset(torch.utils.data.Dataset):
         img = Image.open(img_path)
         img_transformed = self.transform(img.convert("RGB"))
         label = img_path.split('/')[-1].split('.')[0]
-        if label == "D:\\dataset\\tiger":
+        if label == os.path.join("D:\\", "dataset", "tiger"):
             label = 1
-        elif label == "D:\\dataset\\leopard":
+        elif label == os.path.join("D:\\", "dataset", "leopard"):
             label = 0
         return img_transformed, label
 
@@ -202,7 +202,7 @@ def training_network(images_list: list) -> pd.DataFrame:
 
 
 if __name__ == '__main__':
-    images_list = glob.glob(os.path.join("D:\dataset", '*.jpg'))
+    images_list = glob.glob(os.path.join("D:\\", "dataset", '*.jpg'))
     submission = training_network(images_list)
     id_list = []
     class_ = {0: "tiger", 1: "leopard"}
@@ -215,7 +215,7 @@ if __name__ == '__main__':
             label = 1
         else:
             label = 0
-        img_path = os.path.join("D:\dataset", f'{class_random}.{i:04d}.jpg')
+        img_path = os.path.join("D:\\", "dataset", f'{class_random}.{i:04d}.jpg')
         img = Image.open(img_path)
         plt.imshow(img)
         plt.axis("off")
