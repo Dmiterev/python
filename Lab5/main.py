@@ -23,10 +23,10 @@ if device == 'cuda':
 
 
 class dataset(torch.utils.data.Dataset):
-    def __init__(self, file_list, transform=None, path=None):
+    def __init__(self, file_list, path, transform=None):
         self.file_list = file_list
-        self.transform = transform
         self.path = path
+        self.transform = transform
 
     def __len__(self):
         self.filelength = len(self.file_list)
@@ -84,10 +84,11 @@ class Cnn(nn.Module):
         return out
 
 
-def training_network(images_list: list) -> pd.DataFrame:
+def training_network(images_list: list, path: str) -> pd.DataFrame:
     """
     Создает и обучает модель сверточной нейронной сети. Анализирует результаты, сохраняет их в result.csv и строит
     графики.
+    :param path: Путь к датасету.
     :param images_list: Список изображений из датасета.
     """
     random_idx = np.random.randint(1, len(images_list), size=10)
@@ -107,7 +108,8 @@ def training_network(images_list: list) -> pd.DataFrame:
     for i in range(1000):
         class_labels.append(False)
 
-    train_list, train_test_val, train_val, test_val = train_test_split(images_list, class_labels, test_size=0.2, shuffle=True)
+    train_list, train_test_val, train_val, test_val = train_test_split(images_list, class_labels,
+                                                                       test_size=0.2, shuffle=True)
     test_list, val_list, test, val = train_test_split(train_test_val, test_val, test_size=0.5)
 
     train_transforms = transforms.Compose([
@@ -117,15 +119,8 @@ def training_network(images_list: list) -> pd.DataFrame:
         transforms.ToTensor(),
     ])
 
-    test_transforms = transforms.Compose([
-        transforms.Resize((224, 224)),
-        transforms.RandomResizedCrop(224),
-        transforms.RandomHorizontalFlip(),
-        transforms.ToTensor()
-    ])
-
-    train_data = dataset(train_list, transform=train_transforms, path=os.path.join("D:\\", "dataset"))
-    val_data = dataset(val_list, transform=test_transforms, path=os.path.join("D:\\", "dataset"))
+    train_data = dataset(train_list, path, transform=train_transforms)
+    val_data = dataset(val_list, path, transform=train_transforms)
     train_loader = torch.utils.data.DataLoader(dataset=train_data, batch_size=batch_size, shuffle=True)
     val_loader = torch.utils.data.DataLoader(dataset=val_data, batch_size=batch_size, shuffle=True)
 
@@ -203,8 +198,9 @@ def training_network(images_list: list) -> pd.DataFrame:
 
 
 if __name__ == '__main__':
-    images_list = glob.glob(os.path.join("D:\\", "dataset", '*.jpg'))
-    submission = training_network(images_list)
+    dir_path = os.path.join("D:\\", "dataset")
+    images_list = glob.glob(os.path.join(dir_path, '*.jpg'))
+    submission = training_network(images_list, dir_path)
     id_list = []
     class_ = {0: "tiger", 1: "leopard"}
     fig, axes = plt.subplots(2, 5, figsize=(20, 12), facecolor='w')
@@ -216,7 +212,7 @@ if __name__ == '__main__':
             label = 1
         else:
             label = 0
-        img_path = os.path.join("D:\\", "dataset", f'{class_random}.{i:04d}.jpg')
+        img_path = os.path.join(dir_path, f'{class_random}.{i:04d}.jpg')
         img = Image.open(img_path)
         plt.imshow(img)
         plt.axis("off")
